@@ -19,5 +19,6 @@ jobs:
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@master
         with:
-          message: 'Test site for this PR: https://${{GITHUB_REF##*/}}.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'
+          #message: 'Test site for this PR: https://${{GITHUB_REF##*/}}.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'
+          message: 'Test site for this PR: https://{{GITHUB_REF##*/}}.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'
           GITHUB_TOKEN: ${{ secrets.TEST_GITHUB_TOKEN }}
