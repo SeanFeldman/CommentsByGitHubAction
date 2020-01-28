@@ -1,5 +1,6 @@
 name: Comment on PR
-on: [pull_request]
+on: 
+  pull_request
 
 jobs:
   comment_on_pr:
@@ -7,7 +8,7 @@ jobs:
     name: Provide preview URL
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       
       - name: debug
         shell: bash
@@ -23,3 +24,9 @@ jobs:
           #message: 'Test site for this PR: https://${{GITHUB_REF##*/}}.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'
           message: 'Test site for this PR: https://${GITHUB_REF##*/}.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'
           GITHUB_TOKEN: ${{ secrets.TEST_GITHUB_TOKEN }}
+
+      - uses: actions/github-script@0.3.0
+        with:
+          github-token: ${{secrets.TEST_GITHUB_TOKEN}}
+          script: |
+            github.issues.createComment({...context.issue, body: 'Thanks for reporting this issue!'})
