@@ -9,24 +9,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
-      - name: debug
-        shell: bash
-        run: |
-          echo GITHUB_REF=${GITHUB_REF}
-          echo EXTRACT_GITHUB_REF=${GITHUB_REF##*/}
-          echo GITHUB_BASE_REF=${GITHUB_BASE_REF}
-          echo EXTRACT_GITHUB_BASE_REF=${GITHUB_BASE_REF##*/}
-
-      - name: Comment PR
-        uses: thollander/actions-comment-pull-request@master
-        with:
-          #message: 'Test site for this PR: https://${{GITHUB_REF##*/}}.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'
-          message: 'Test site for this PR: https://${GITHUB_REF##*/}.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'
-          GITHUB_TOKEN: ${{ secrets.TEST_GITHUB_TOKEN }}
 
       - uses: actions/github-script@0.3.0
         with:
           github-token: ${{secrets.TEST_GITHUB_TOKEN}}
           script: |
-            github.issues.createComment({...context.issue, body: context.payload.pull_request.head.ref})
+            github.issues.createComment({...context.issue, body: $'Test site for this PR: https://{context.payload.pull_request.head.ref}.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'})
