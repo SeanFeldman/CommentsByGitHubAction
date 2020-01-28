@@ -14,7 +14,8 @@ jobs:
         run: |
           echo GITHUB_REF=${GITHUB_REF}
           echo EXTRACT_GITHUB_REF=${GITHUB_REF##*/}
-          echo GITHUB_REF#refs/heads/=${GITHUB_REF#refs/heads/}
+          echo GITHUB_BASE_REF=${GITHUB_BASE_REF}
+          echo EXTRACT_GITHUB_BASE_REF=${GITHUB_BASE_REF##*/}
 
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@master
