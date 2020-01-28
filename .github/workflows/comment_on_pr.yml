@@ -1,4 +1,4 @@
-name: Provide preview URL
+name: Comment on PR
 on: [pull_request]
 
 jobs:
