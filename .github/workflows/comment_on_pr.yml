@@ -1,3 +1,4 @@
+name: Provide preview URL
 on: [pull_request]
 
 jobs:
