@@ -14,4 +14,4 @@ jobs:
         with:
           github-token: ${{secrets.TEST_GITHUB_TOKEN}}
           script: |
-            github.issues.createComment({...context.issue, body: $'Test site for this PR: https://{context.payload.pull_request.head.ref}.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'})
+            github.issues.createComment({...context.issue, body: 'Test site for this PR: https://' + context.payload.pull_request.head.ref + '.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'})
