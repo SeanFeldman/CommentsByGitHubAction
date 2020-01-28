@@ -15,10 +15,11 @@ jobs:
         run: |
           echo GITHUB_REF=${GITHUB_REF}
           echo EXTRACT_GITHUB_REF=${GITHUB_REF##*/}
+          echo GITHUB_REF#refs/heads/=${GITHUB_REF#refs/heads/}
 
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@master
         with:
           #message: 'Test site for this PR: https://${{GITHUB_REF##*/}}.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'
-          message: 'Test site for this PR: https://{{GITHUB_REF##*/}}.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'
+          message: 'Test site for this PR: https://${GITHUB_REF##*/}.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'
           GITHUB_TOKEN: ${{ secrets.TEST_GITHUB_TOKEN }}
