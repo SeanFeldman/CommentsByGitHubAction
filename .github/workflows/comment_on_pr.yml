@@ -19,7 +19,9 @@ jobs:
             // Replace anything not alphanumeric or a dash with a dash
             // Replace multiple dashes with a single dash
             // Trim any dashes off the beginning or end
-            console.log(rawBranchName);
+            console.log('-----');
+            console.log(JSON.stringify(rawBranchName));
+            console.log('-----');
             var branchName = rawBranchName
               .replace(/[^a-z0-9-]+/ig, '-')
               .replace(/-+/ig, '-')
