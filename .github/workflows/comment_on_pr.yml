@@ -15,16 +15,18 @@ jobs:
         with:
           github-token: ${{secrets.TEST_GITHUB_TOKEN}}
           script: |
-            const rawBranchName = context.payload.pull_request.head.ref;
+            const rawBranchName = JSON.stringify(context.payload.pull_request.head.ref);
             // Replace anything not alphanumeric or a dash with a dash
             // Replace multiple dashes with a single dash
             // Trim any dashes off the beginning or end
             console.log('-----');
-            console.log(JSON.stringify(rawBranchName));
-            console.log('-----');
+            console.log('Raw branc name: ' + rawBranchName);
             var branchName = rawBranchName
               .replace(/[^a-z0-9-]+/ig, '-')
               .replace(/-+/ig, '-')
               .replace(/^-+/ig, '')
               .replace(/-+$/ig, '');
+            console.log('Raw branc name: ' + branchName);
+            console.log('-----');
+            
             github.issues.createComment({...context.issue, body: 'Test site for this PR: https://' + branchName + '.test.particular.net<br><br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'})
