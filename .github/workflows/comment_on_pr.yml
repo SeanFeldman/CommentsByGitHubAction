@@ -1,23 +1,32 @@
-name: Preview comment
-
-on: [pull_request]
+name: Comment on PR
+on: 
+  pull_request:
+    types: [opened]
 
 jobs:
   comment_on_pr:
     runs-on: ubuntu-latest
-    name: An example job to comment a PR
+    name: Provide preview URL
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
-      
-      - name: debug
-        shell: bash
-        run: |
-          echo GITHUB_REF=${GITHUB_REF}
-          echo EXTRACT_GITHUB_REF=${GITHUB_REF##*/}
+        uses: actions/checkout@v2
 
-      - name: Comment PR
-        uses: thollander/actions-comment-pull-request@master
+      - uses: actions/github-script@0.4.0
         with:
-          message: 'Test site for this PR: https://${{GITHUB_REF##*/}}.test.particular.net<br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'
-          GITHUB_TOKEN: ${{ secrets.TEST_GITHUB_TOKEN }}
+          github-token: ${{secrets.TEST_GITHUB_TOKEN}}
+          script: |
+            const rawBranchName = JSON.stringify(context.payload.pull_request.head.ref);
+            // Replace anything not alphanumeric or a dash with a dash
+            // Replace multiple dashes with a single dash
+            // Trim any dashes off the beginning or end
+            console.log('-----');
+            console.log('Raw branch name: ' + rawBranchName);
+            var branchName = rawBranchName
+              .replace(/[^a-z0-9-]+/ig, '-')
+              .replace(/-+/ig, '-')
+              .replace(/^-+/ig, '')
+              .replace(/-+$/ig, '');
+            console.log('Branch name to be used: ' + branchName);
+            console.log('-----');
+            
+            github.issues.createComment({...context.issue, body: 'Test site for this PR: https://' + branchName + '.test.particular.net<br><br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'})
