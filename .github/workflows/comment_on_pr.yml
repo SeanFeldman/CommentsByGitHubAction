@@ -21,7 +21,7 @@ jobs:
             // Trim any dashes off the beginning or end
             var branchName = rawBranchName
               .replace(/[^a-z0-9-]+/ig, '-')
-              .subdomain.replace(/-+/ig, '-')
-              .subdomain.replace(/^-+/ig, '')
-              .subdomain.replace(/-+$/ig, '');
+              .replace(/-+/ig, '-')
+              .replace(/^-+/ig, '')
+              .replace(/-+$/ig, '');
             github.issues.createComment({...context.issue, body: 'Test site for this PR: https://' + branchName + '.test.particular.net<br><br>The site will be available once the the "Deploy Package" check has completed successfully. It can take a few minutes if the build servers happen to be busy.'})
